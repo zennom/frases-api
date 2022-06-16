@@ -14,16 +14,45 @@ export const nome = (req:Request,res:Response) =>{
 }
 
 export const createPhrase =  async(req: Request, res: Response) =>{
-    //fazendo a requisição no body de author e txt
     let {author, txt} = req.body
-
-    //em seguida vamos usar os dados author e txt para 
-    //conseguirmos inserir no nosso model para o banco de dados
     let newPhrase = await Phrase.create({author, txt})
-    
-    //retornando a frase no json
     res.json({id: newPhrase.id, author , txt})
 }
 
+export const listPhrases = async(req:Request, res: Response) =>{
+    let list = await Phrase.findAll()
+    res.json({list})
+
+}
+export const getPhrase = async(req:Request, res:Response) =>{
+    let { id } = req.params
+    let phrase = await Phrase.findByPk(id)
+    if(phrase){
+        res.json({phrase})
+    }else{
+        res.json({error: 'Frase não existe'})
+    }
+}
+
+export const updatePhrase = async(req:Request, res:Response) =>{
+    let { id } = req.params
+    let {author, txt} = req.body
+    let phrase = await Phrase.findByPk(id)
+    if(phrase){
+        phrase.author = author
+        phrase.txt = txt
+        await phrase.save()
+        res.json({phrase})
+    }else{
+        res.json({error: 'Frase não existe'})
+    }
+}
+
+export const deletePhrase = async (req:Request, res:Response) =>{
+    let { id } = req.params
+    await Phrase.destroy( { where: { id } } )
+
+    res.json({})
+}
 
 
