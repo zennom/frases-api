@@ -1,4 +1,4 @@
-## Criação de API simpes com CRUD
+## Criação de API simples com CRUD
 
 * Criar frase
 * Listar frase
